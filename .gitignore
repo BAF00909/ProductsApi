@@ -1,0 +1,15 @@
+# Ignore build artifacts
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.cache
+
+# Ignore NuGet packages
+packages/
+
+# Ignore IDE-specific files
+.vs/
+.vscode/
