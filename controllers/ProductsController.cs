@@ -27,7 +27,8 @@ namespace ProductsApi.controllers
             return Ok(result);
         }
         [HttpPost]
-        public async Task<IActionResult> Post(Product product)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<IActionResult> Create([FromBody] Product product)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -36,11 +37,15 @@ namespace ProductsApi.controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Product product)
         {
-            if(id != product.Id)
+            var existedProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            if(existedProduct == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            _context.Entry(product).State = EntityState.Modified;
+
+            existedProduct.Name = product.Name;
+            existedProduct.Price = product.Price;
+
             await _context.SaveChangesAsync();
             return NoContent();
         }
